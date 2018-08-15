@@ -11,20 +11,17 @@ CORS(app)
 
 @app.route('/')
 def homepage():
-    the_time = datetime.now().strftime("%A, %d %b %Y %l:%M %p")
-
-    return """
+	the_time = datetime.now().strftime("%A, %d %b %Y %l:%M %p")
+	return """
     <h1>Hello heroku</h1>
     <p>It is currently {time}.</p>
-
-    <img src="http://loremflickr.com/600/400" />
-    """.format(time=the_time)
+	<img src="http://loremflickr.com/600/400" />
+	""".format(time=the_time)
 
 def totalcost(a):
-	
-    tc = np.sum(t*m*k*(((x-a[0])**2)+((y-a[1])**2))**0.5)
-    print("Custo = {}, X = {}, Y = {}".format(tc, a[0], a[1]))
-    return tc
+	tc = np.sum(t*m*k*(((x-a[0])**2)+((y-a[1])**2))**0.5)
+	print("Custo = {}, X = {}, Y = {}".format(tc, a[0], a[1]))
+	return tc
 
 @app.route('/cog', methods=['POST'])
 def cog():
@@ -35,15 +32,15 @@ def cog():
 	global y
 	#getting the parameters of the request
 	jdata = request.get_json()
-    x = []
-    y = []
-    m = []
-    t = []
-    for j in jdata
-    	x.extend(j[1])
-    	y.extend(j[2])
-    	m.extend(j[3])
-    	t.extend(j[4])
+	x = []
+	y = []
+	m = []
+	t = []
+	for j in jdata
+		x.extend(j[1])
+		y.extend(j[2])
+		m.extend(j[3])
+		t.extend(j[4])
 	#x = [2, 5, 9, 7, 2]
 	x = np.array(x)
 	#y = [1, 2, 1, 4, 5]
@@ -64,5 +61,5 @@ def cog():
 	""".format(sol.x[0], sol.x[1])
 
 if __name__ == '__main__':
-    app.run(debug=True, use_reloader=True)
+	app.run(debug=True, use_reloader=True)
 
