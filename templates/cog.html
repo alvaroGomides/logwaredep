@@ -1,0 +1,52 @@
+
+
+<div class="solution">
+    <h1>{{ nome }}</h1>
+    <h3><b>Custo Total:</b> {{ custo }}</h3>
+    <h3><b>Coordenada X:</b> {{ coordenadax }}</h3>
+    <h3><b>Coordenada Y:</b> {{ coordenaday }}</h3>
+    <canvas id="myChart" width="400" height="400"></canvas>
+
+    <script type="text/javascript">
+    var ctx = document.getElementById("myChart");
+    var ctx = document.getElementById("myChart").getContext("2d");
+    var ctx = $("#myChart");
+    var ctx = "myChart";
+        var scatterChart = new Chart(ctx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Unidades',
+                    backgroundColor: '#890000',
+                    data: [
+                        {% for u in units %}
+                            {
+                                x: {{ u[1] }},
+                                y: {{ u[2] }},
+                            },
+                        {% endfor %}
+                        ]
+                },{
+                    label: 'Melhor Ponto',
+                    backgroundColor: '#10aa00',
+
+                    data: [
+
+                            {
+                                x: {{ coordenadax }},
+                                y: {{ coordenaday }},
+                            },
+                        ]
+                }]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        type: 'linear',
+                        position: 'bottom'
+                    }]
+                }
+            }
+        });
+    </script>
+</div>

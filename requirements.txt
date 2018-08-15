@@ -4,3 +4,6 @@ numpy
 scipy
 flask_cors
 requests
+json
+render_template
+jsonify

@@ -5,6 +5,11 @@ import numpy as np
 from scipy.optimize import minimize
 from scipy.optimize import fmin
 from flask import request
+from flask import jsonify
+from flask import render_template
+import json
+import requests
+
 
 app = Flask(__name__)
 CORS(app)
@@ -20,52 +25,51 @@ def homepage():
     """.format(time=the_time)
 
 
-def totalcost(a):
-    tc = np.sum(t * m * k * (((x - a[0]) ** 2) + ((y - a[1]) ** 2)) ** 0.5)
-    print("Custo = {}, X = {}, Y = {}".format(tc, a[0], a[1]))
-    return tc
+
 
 
 @app.route('/cog', methods=['POST'])
 def cog():
-    global t
-    global m
-    global k
-    global x
-    global y
-    # getting the parameters of the request
-    if (request.data):
-        jdata = request.get_json()
-    else:
-        return 'nothing to do here'
+    def totalcost(a):
+        tc = np.sum(t * m * k * (((x - a[0]) ** 2) + ((y - a[1]) ** 2)) ** tFactor)
+        print("Custo = {}, X = {}, Y = {}".format(round(tc, 2), round(a[0], 4), round(a[1], 4)))
+        return tc
+
     x = []
     y = []
     m = []
     t = []
-    for j in jdata:
-        x.extend(j[1])
-        y.extend(j[2])
-        m.extend(j[3])
-        t.extend(j[4])
-    # x = [2, 5, 9, 7, 2]
+
+    data = request.get_json()
+    table = json.loads(data['table'])
+
+    for j in table:
+        x.append(float(j[1]))
+        y.append(float(j[2]))
+        m.append(float(j[3]))
+        t.append(float(j[4]))
+
     x = np.array(x)
-    # y = [1, 2, 1, 4, 5]
     y = np.array(y)
-    # m = [300, 500, 170, 120, 900]
     m = np.array(m)
-    # t = [0.002, 0.0015, 0.002, 0.0013, 0.0015]
     t = np.array(t)
+
     # Determining total costs
-    k = 50
+    k = [50]
+    k = int(data['power_factor'])
+
+
+    tFactor = float(data['scale_factor'])
+    tFactor = np.array(tFactor)
+    tFactor = tFactor.astype(np.float)
     b = []
     a = [2, 0]
-    # print(totalcost(a))
-    # print(type(totalcost(a)))
-    sol = minimize(totalcost, (2, 0), method="SLSQP", tol="0.1")
-    return """
-    A instalacao vai ser localizada nas seguintes coordenadas: x-> {} e y-> {}
-    """.format(sol.x[0], sol.x[1])
 
+    sol = minimize(totalcost, (2, 0), method="SLSQP", tol="0.1")
+
+    return render_template('cog.html', nome=data['name'], custo=round(sol.fun,4),
+                           coordenadax=round(sol.x[0],4), coordenaday=round(sol.x[1],4),
+                           units=table)
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)
