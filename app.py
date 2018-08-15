@@ -1,10 +1,13 @@
 from flask import Flask
+from flask_cors import CORS, cross_origin
 from datetime import datetime
 import numpy as np
 from scipy.optimize import minimize
 from scipy.optimize import fmin
 
 app = Flask(__name__)
+CORS(app)
+
 
 @app.route('/')
 def homepage():
