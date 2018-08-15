@@ -4,6 +4,7 @@ from datetime import datetime
 import numpy as np
 from scipy.optimize import minimize
 from scipy.optimize import fmin
+import requests 
 
 app = Flask(__name__)
 CORS(app)
