@@ -33,13 +33,24 @@ def cog():
 	global k
 	global x
 	global y
-	x = [2, 5, 9, 7, 2]
+	#getting the parameters of the request
+    jdata = request.get_json()
+    x = []
+    y = []
+    m = []
+    t = []
+    for j in jdata
+    	x.extend(j[1])
+    	y.extend(j[2])
+    	m.extend(j[3])
+    	t.extend(j[4])
+	#x = [2, 5, 9, 7, 2]
 	x = np.array(x)
-	y = [1, 2, 1, 4, 5]
+	#y = [1, 2, 1, 4, 5]
 	y = np.array(y)
-	m = [300, 500, 170, 120, 900]
+	#m = [300, 500, 170, 120, 900]
 	m = np.array(m)
-	t = [0.002, 0.0015, 0.002, 0.0013, 0.0015]
+	#t = [0.002, 0.0015, 0.002, 0.0013, 0.0015]
 	t = np.array(t)
 	#Determining total costs
 	k = 50
