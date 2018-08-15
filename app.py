@@ -23,7 +23,7 @@ def totalcost(a):
     print("Custo = {}, X = {}, Y = {}".format(tc, a[0], a[1]))
     return tc
 
-@app.route('/cog')
+@app.route('/cog', methods=['POST'])
 def cog():
 	global t
 	global m
