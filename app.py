@@ -34,7 +34,7 @@ def cog():
 	global x
 	global y
 	#getting the parameters of the request
-    jdata = request.get_json()
+	jdata = request.get_json()
     x = []
     y = []
     m = []
