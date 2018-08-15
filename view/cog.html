@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../../../favicon.ico">
+
+    <title>Logware DEP - Módulo COG</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <style type="text/css">
+        body {
+            padding-top: 5rem;
+        }
+
+        .starter-template {
+            padding: 3rem 1.5rem;
+            text-align: center;
+        }
+    </style>
+    
+    <link rel="stylesheet" href="assets/jquery.edittable.css" />
+    
+</head>
+
+    
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+      <a class="navbar-brand" href="#">Logware DEP</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item ">
+            <a class="nav-link" href="#">Início</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="#">COG <span class="sr-only">(current)</span></a>
+          </li>
+
+        </ul>
+      </div>
+    </nav>
+
+    <main role="main" class="container">
+
+      <div class="starter-template">
+        <h1>COG</h1>
+        <p class="lead">Encontra a posição de uma única instalação pelo método do centro-de-gravidade exato.</p>
+      </div>
+        
+        
+        <div class="table-container">
+            <h2>Nome do problema:  <input type="text" id="name_problem" value="Problema1" /></h2>
+            
+            <h4>Fator de potência (T): <input type="text" class="number" id="scale_factor" value="0.5" /></h4>
+            <h4>Fator de escala (K): <input type="text" class="number" id="power_factor" value="50" /></h4>
+            <div id="table-data"></div>
+            <a href="#" class="sendjson btn btn-primary">Calcular</a> 
+            <a href="#" class="downloadjson btn btn-success">Baixar Arquivo</a> 
+            <div class="float-right">
+                <input type="file" id="selectFiles" value="Importar Arquivo" />
+                <button id="import" class="btn btn-warning">Ler Arquivo</button>
+            </div>
+
+        </div>
+
+    </main><!-- /.container -->
+
+<div class="modal" id="myModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Resultado</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalScreen">
+        
+      </div>
+      <div class="modal-footer">
+        <a class="printscreen btn btn-success float-left" href="#">Salvar Relatório</a>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="assets/jquery.edittable.js"></script>
+    <script src="assets/html2canvas.js"></script>
+    <script src="assets/Chart.bundle.js"></script>
+    
+    <script>
+        // Initialize table example 1
+        var eTable = $('#table-data').editTable({
+            field_templates: {
+                'number2' : {
+                    html: '<input type="text" class="number" />',
+                    getValue: function (input) {
+                        return $(input).attr('value');
+                    },
+                    setValue: function (input, value) {
+                        if ( value ){
+                            return $(input).attr('value',value);
+                        }
+                    }
+                },
+                'checkbox' : {
+                    html: '<input type="text" class="number" />',
+                    getValue: function (input) {
+                        return $(input).attr('value');
+                    },
+                    setValue: function (input, value) {
+                        return $(input).attr('value', value);
+                    }
+                },
+            },
+            row_template: ['text', 'checkbox', 'checkbox', 'checkbox', 'checkbox'],
+
+            headerCols: [
+                'Descrição',
+                'Coordenada X',
+                'Coordenada Y',
+                'Volume',
+                'Taxa de Transporte ($)'
+            ],
+            data:[
+                ['ponto 1','2','1','300','0.002'],
+                ['ponto 2','5','2','500','0.0015'],
+                ['ponto 3','9','1','170','0.002'],
+                ['ponto 4','7','4','120','0.0013'],
+                ['ponto 5','2','5','900','0.0015'],
+            ],
+            maxRows: 15,
+            
+
+            first_row: false,
+        });
+        
+        // Send JSON data trough an ajax call
+        $('.sendjson').click(function () {
+            var postData = {
+                table: eTable.getJsonData(),
+                name: $('#name_problem').val(),
+                power_factor: $('#power_factor').val(),
+                scale_factor: $('#scale_factor').val()
+            }
+            $.ajax({
+                url: 	'http://127.0.0.1:5000/cog',
+                type: 	'POST',
+                data: JSON.stringify(postData),
+                dataType: 'json',
+                table: eTable.getJsonData(),
+                contentType: "application/json",
+                complete: function (result) {
+                    console.log(result.responseText);
+                    $('.modal-body').html(result.responseText);
+                    $('#myModal').modal('show');
+                }
+            });
+            return false;
+        });
+        
+        
+        $(".downloadjson").click(function() {
+            var $nameFile = $('#name_problem').val() + '.json';
+            
+            var postData = {
+                table: eTable.getJsonData(),
+                name: $('#name_problem').val(),
+                power_factor: $('#power_factor').val(),
+                scale_factor: $('#scale_factor').val()
+            }
+            
+            
+          $("<a />", {
+            "download": $nameFile,
+            "href" : "data:application/json," + encodeURIComponent(JSON.stringify(postData))
+          }).appendTo("body")
+          .click(function() {
+             $(this).remove()
+          })[0].click()
+        })
+        
+        
+        document.getElementById('import').onclick = function() {
+            var files = document.getElementById('selectFiles').files;
+          console.log(files);
+          if (files.length <= 0) {
+            return false;
+          }
+
+          var fr = new FileReader();
+
+          fr.onload = function(e) { 
+          console.log(e);
+            var result = JSON.parse(e.target.result);
+              
+             
+            var formatted = JSON.stringify(result, null, 2);
+              eTable.loadJsonData(result['table']); 
+              $('#name_problem').val(result['name']);
+              $('#power_factor').val(result['power_factor']);
+              $('#scale_factor').val(result['scale_factor']);
+          }
+
+          fr.readAsText(files.item(0));
+        };
+        
+        $('.printscreen').click(function(){
+            html2canvas(document.querySelector('#modalScreen')).then(function(canvas) {
+
+                console.log(canvas);
+                saveAs(canvas.toDataURL(), $('#name_problem').val()+'-relatorio.png');
+            });
+            
+        });
+        
+        function saveAs(uri, filename) {
+            var link = document.createElement('a');
+            if (typeof link.download === 'string') {
+                link.href = uri;
+                link.download = filename;
+                //Firefox requires the link to be in the body
+                document.body.appendChild(link);
+                //simulate click
+                link.click();
+                //remove the link when done
+                document.body.removeChild(link);
+            } else {
+                window.open(uri);
+            }
+        }
+        
+        $('.number').keypress(function(event) {
+          if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+            event.preventDefault();
+          }
+        });
+    </script>
+    
+</body>
+</html>
