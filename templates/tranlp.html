@@ -1,0 +1,41 @@
+
+
+<div class="solution">
+    <h1>{{ nome }}</h1>
+    Custo Total = {{res['fun']}}
+
+    <table class="tabelaResultado table">
+        <thead class="thead-light">
+            <tr>
+                <td>De/Para</td>
+                {% for u in toArray %}
+                    <td>{{u}}</td>
+                {% endfor %}
+                <td>Oferta</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in tableResults %}
+                <tr>
+                    {% for s in i %}
+                        <td>{{s}}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+        <tfooter>
+
+                <tr>
+                    <td>Demanda</td>
+                    {% for s in lastLine %}
+                        <td>{{s}}</td>
+                    {% endfor %}
+                    <td></td>
+                </tr>
+
+        </tfooter>
+
+    </table>
+
+
+</div>

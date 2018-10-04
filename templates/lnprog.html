@@ -1,0 +1,14 @@
+
+
+<div class="solution">
+    <h1>{{ nome }}</h1>
+    <h2>Função Objetivo = {{roundedResult}} <small>({{res['fun']}})</small></h2>
+    <h3>Variáveis:</h3>
+    {% for u in finalResult %}
+    <p><b>{{u[0]}}:</b> {{u[1]}} <small>({{u[2]}})</small></p>
+    {% endfor %}
+
+
+
+
+</div>
